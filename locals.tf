@@ -66,8 +66,10 @@ locals {
     ] if gcr.repositories != null
   ])
 
-  # create gar_repositories list and sets default values for optional fields.
-  gar_repositories = [
+  # create project_all_gar_repositories list, appending storage_region and project_id when ommited
+  # for projects having clean_all = true.
+  # Set default values for optional fields.
+  project_all_gar_repositories = [
     for gar in var.gar_repositories : {
       repo           = "${gar.region}-docker.pkg.dev/${gar.project_id != null ? gar.project_id : local.google_project_id}/${gar.name}"
       grace          = gar.parameters != null ? (gar.parameters.grace != null ? gar.parameters.grace : "0") : "0"
@@ -78,11 +80,31 @@ locals {
       recursive      = false
       dry_run        = gar.parameters != null ? (gar.parameters.dry_run != null ? gar.parameters.dry_run : false) : false
       filter         = gar.parameters != null ? "grace-${gar.parameters.grace != null ? gar.parameters.grace : "0"}-keep-${gar.parameters.keep != null ? gar.parameters.keep : "0"}-tag_filter-${gar.parameters.tag_filter != null ? gar.parameters.tag_filter : "no"}-tag_filter_any-${gar.parameters.tag_filter_any != null ? gar.parameters.tag_filter_any : "no"}-tag_filter_all-${gar.parameters.tag_filter_all != null ? gar.parameters.tag_filter_all : "no"}" : "delete-all-untagged-images-recursive"
-    }
+    } if repo.clean_all == true
   ]
 
+  # create gar_repositories list and sets default values for optional fields.
+  gar_repositories = flatten([
+    for gar in var.gar_repositories : [
+      for repo in gar.repositories : merge(repo,
+        {
+          repo           = "${repo.region}-docker.pkg.dev/${repo.project_id != null ? repo.project_id : local.google_project_id}/${repo.name}"
+          name           = length(split("repositories/", repo.name)) == 2 ? split("/", split("repositories/", repo.name)[1])[0] : repo.name
+          grace          = repo.grace != null ? repo.grace : "0"
+          keep           = repo.keep != null ? repo.keep : "0"
+          tag_filter     = repo.tag_filter != null ? repo.tag_filter : ""
+          tag_filter_any = repo.tag_filter_any != null ? repo.tag_filter_any : ""
+          tag_filter_all = repo.tag_filter_all != null ? repo.tag_filter_all : ""
+          recursive      = repo.recursive != null ? repo.recursive : false
+          dry_run        = repo.dry_run != null ? repo.dry_run : false
+          filter         = "grace-${repo.grace != null ? repo.grace : "0"}-keep-${repo.keep != null ? repo.keep : "0"}-tag_filter-${repo.tag_filter != null ? repo.tag_filter : "no"}-tag_filter_any-${repo.tag_filter_any != null ? repo.tag_filter_any : "no"}-tag_filter_all-${repo.tag_filter_all != null ? repo.tag_filter_all : "no"}"
+        }
+      )
+    ] if gar.repositories != null
+  ])
+
   # create final repositories list
-  fetched_repositories = concat(local.project_all_repositories, local.repositories, local.gar_repositories)
+  fetched_repositories = concat(local.project_all_repositories, local.repositories, local.gar_repositories, local.project_all_gar_repositories)
 
   running_as_a_service_account = length(regexall(".*@.*[.]gserviceaccount[.]com", data.google_client_openid_userinfo.terraform.email)) > 0
 }

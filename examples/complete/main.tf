@@ -65,6 +65,34 @@ module "gcr_cleaner" {
   ]
   gar_repositories = [
     {
+      storage_region = "eu"
+      repositories = [
+        {
+          # in `python_repo/pythone_cache` repository, delete all `beta` tags
+          name           = "projects/python//locations/europe-central2/repositorie/python_repo/pythone_cache"
+          tag_filter_all = "^beta.+$"
+        },
+        {
+          # in `python_repo/pythone` repository, delete all images older than 30 days (720h)
+          name  = "projects/python/locations/europe-central2/repositorie/python_repo/pythone"
+          grace = "720h"
+        },
+        {
+          # in `python_repo/pythone_test` repository, if there is at least one `alpha` tag,
+          # delete all and keep only 3 tags
+          name           = "projects/python/locations/europe-central2/repositorie/python_repo/pythone_test"
+          keep           = 3
+          tag_filter_any = "^alpha.+$"
+        },
+        {
+          # in `test/tools/ci` repository and all its child repositories, keep only 5 images
+          name      = "test/tools/ci"
+          keep      = 5
+          recursive = true
+        }
+      ]
+    },
+    {
       project_id = "foobar-123"
       region     = "europe-west1"
       name       = "myrepo"
