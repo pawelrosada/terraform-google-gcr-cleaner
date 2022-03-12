@@ -65,7 +65,7 @@ module "gcr_cleaner" {
   ]
   gar_repositories = [
     {
-      storage_region = "eu"
+      region = "eu"
       repositories = [
         {
           # in `python_repo/pythone_cache` repository, delete all `beta` tags

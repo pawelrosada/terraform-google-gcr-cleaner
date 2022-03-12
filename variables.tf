@@ -63,7 +63,7 @@ List of Google Container Registries objects to create:
 ```
 list(object({
     project_id     = Value of the Google project id, if ommited, it will be assigned `google_project_id` local value, which is the provider's project_id (optional(string))
-    storage_region = Location of the storage bucket (optional(string))
+    region = Location of the storage bucket (optional(string))
     repositories = Docker image repositories to clean (optional(list(object({
       name           = Name of the repository (string)
       grace          = Relative duration in which to ignore references. This value is specified as a time duration value like "5s" or "3h". If set, refs newer than the duration will not be deleted. If unspecified, the default is no grace period (all untagged image refs are deleted) (optional(string))
@@ -153,7 +153,7 @@ EOF
 
   type = list(object({
     project_id     = optional(string)
-    storage_region = optional(string)
+    region = optional(string)
     repositories = optional(list(object({
       name           = string
       grace          = optional(string)
