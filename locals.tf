@@ -88,7 +88,7 @@ locals {
     for gar in var.gar_repositories : [
       for repo in gar.repositories : merge(repo,
         {
-          repo           = "${gar.region}-docker.pkg.dev/${repo.project_id != null ? repo.project_id : local.google_project_id}/${repo.name}"
+          repo           = "${gar.region}-docker.pkg.dev/${gar.project_id != null ? gar.project_id : local.google_project_id}/${repo.name}"
           name           = length(split("repositories/", repo.name)) == 2 ? split("/", split("repositories/", repo.name)[1])[0] : repo.name
           grace          = repo.grace != null ? repo.grace : "0"
           keep           = repo.keep != null ? repo.keep : "0"
