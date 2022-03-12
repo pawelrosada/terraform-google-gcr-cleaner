@@ -80,7 +80,7 @@ locals {
       recursive      = false
       dry_run        = gar.parameters != null ? (gar.parameters.dry_run != null ? gar.parameters.dry_run : false) : false
       filter         = gar.parameters != null ? "grace-${gar.parameters.grace != null ? gar.parameters.grace : "0"}-keep-${gar.parameters.keep != null ? gar.parameters.keep : "0"}-tag_filter-${gar.parameters.tag_filter != null ? gar.parameters.tag_filter : "no"}-tag_filter_any-${gar.parameters.tag_filter_any != null ? gar.parameters.tag_filter_any : "no"}-tag_filter_all-${gar.parameters.tag_filter_all != null ? gar.parameters.tag_filter_all : "no"}" : "delete-all-untagged-images-recursive"
-    } if repo.clean_all == true
+    } if gar.clean_all == true
   ]
 
   # create gar_repositories list and sets default values for optional fields.
