@@ -46,7 +46,7 @@ resource "google_artifact_registry_repository_iam_member" "this" {
 
   project    = var.gar_repositories[0].project_id != null ? var.gar_repositories[0].project_id : local.google_project_id
   location   = var.gar_repositories[0].region
-  repository = "projects/${var.gar_repositories[0].project_id != null ? var.gar_repositories[0].project_id : local.google_project_id}/locations/${var.gar_repositories[0].region}/repositories/${distinct(each.value.name)}"
+  repository = "projects/${var.gar_repositories[0].project_id != null ? var.gar_repositories[0].project_id : local.google_project_id}/locations/${var.gar_repositories[0].region}/repositories/${distinct(each.value[0].name)}"
   role       = "roles/artifactregistry.repoAdmin"
   member     = "serviceAccount:${google_service_account.cleaner.email}"
 
