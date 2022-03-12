@@ -41,12 +41,12 @@ resource "google_project_iam_member" "this" {
 # and delete container images.
 resource "google_artifact_registry_repository_iam_member" "this" {
   for_each = {
-    for repo in var.gar_repositories : repo.name => repo
+    for repo in var.gar_repositories : repo.name => repo...
   }
 
   project    = each.value.project_id != null ? each.value.project_id : local.google_project_id
   location   = each.value.region
-  repository = "projects/${each.value.project_id != null ? each.value.project_id : local.google_project_id}/locations/${each.value.region}/repositories/${each.value.name}"
+  repository = "projects/${each.value.project_id != null ? each.value.project_id : local.google_project_id}/locations/${each.value.region}/repositories/${distinct(each.value.name)}"
   role       = "roles/artifactregistry.repoAdmin"
   member     = "serviceAccount:${google_service_account.cleaner.email}"
 
