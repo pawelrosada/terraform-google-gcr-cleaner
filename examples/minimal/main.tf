@@ -20,9 +20,14 @@ module "gcr_cleaner" {
   ]
   gar_repositories = [
     {
-      name       = "foo"
-      region     = "europe-west1"
-      project_id = "foobar-123"
+      region = "eu"
+      repositories = [
+        {
+          # in `python_repo/pythone_cache` repository, delete all `beta` tags
+          name           = "projects/python//locations/europe-central2/repositorie/python_repo/pythone_cache"
+          tag_filter_all = "^beta.+$"
+        }
+      ]
     }
   ]
 }

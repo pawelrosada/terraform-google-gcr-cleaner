@@ -91,16 +91,6 @@ module "gcr_cleaner" {
           recursive = true
         }
       ]
-    },
-    {
-      project_id = "foobar-123"
-      region     = "europe-west1"
-      name       = "myrepo"
-      parameters = {
-        grace      = "180h"
-        keep       = 3
-        tag_filter = "^alpha.+$"
-      }
     }
   ]
 }

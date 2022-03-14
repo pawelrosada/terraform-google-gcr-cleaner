@@ -127,7 +127,7 @@ List of Google Artifact Registry objects:
 ```
 list(object({
     project_id     = Value of the Google project id, if ommited, it will be assigned `google_project_id` local value, which is the provider's project_id (optional(string))
-    storage_region = Location of the storage bucket (optional(string))
+    region         = Location of gar repo optional(string))
     repositories = Docker image repositories to clean (optional(list(object({
       name           = Name of the repository (string)
       grace          = Relative duration in which to ignore references. This value is specified as a time duration value like "5s" or "3h". If set, refs newer than the duration will not be deleted. If unspecified, the default is no grace period (all untagged image refs are deleted) (optional(string))
@@ -138,15 +138,6 @@ list(object({
       recursive      = If set to true, will recursively search all child repositories (optional(bool))
       dry_run        = If set to true, will not delete anything and outputs what would have been deleted. (optional(bool))
     }))))
-    clean_all  = Set to `true` to clean all project's repositories (optional(bool))
-    parameters = Map of parameters to apply to all repositories when `clean_all` is set to `true` (optional(object({
-      grace          = Relative duration in which to ignore references. This value is specified as a time duration value like "5s" or "3h". If set, refs newer than the duration will not be deleted. If unspecified, the default is no grace period (all untagged image refs are deleted) (optional(string))
-      keep           = If an integer is provided, it will always keep that minimum number of images. Note that it will not consider images inside the `grace` duration (optional(string))
-      tag_filter     = (Deprecated) If specified, any image where the first tag matches this given regular expression will be deleted. The image will not be deleted if other tags match the regular expression (optional(string))
-      tag_filter_any = If specified, any image with at least one tag that matches this given regular expression will be deleted. The image will be deleted even if it has other tags that do not match the given regular expression (optional(string))
-      tag_filter_all = If specified, any image where all tags match this given regular expression will be deleted. The image will not be delete if it has other tags that do not match the given regular expression (optional(string))
-      dry_run        = If set to true, will not delete anything and outputs what would have been deleted. (optional(bool))
-    })))
 }))
 ```
 EOF
@@ -164,15 +155,6 @@ EOF
       recursive      = optional(bool)
       dry_run        = optional(bool)
     })))
-    clean_all = optional(bool)
-    parameters = optional(object({
-      grace          = optional(string)
-      keep           = optional(string)
-      tag_filter     = optional(string)
-      tag_filter_any = optional(string)
-      tag_filter_all = optional(string)
-      dry_run        = optional(bool)
-    }))
   }))
   default = []
   validation {
