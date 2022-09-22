@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
 <a name="unreleased"></a>
+## [1.5.0](https://github.com/pawelrosada/terraform-google-gcr-cleaner/compare/v1.4.1...v1.5.0) (2022-09-22)
+
+
+### Features
+
+* Change the release process ([#60](https://github.com/pawelrosada/terraform-google-gcr-cleaner/issues/60)) ([d046976](https://github.com/pawelrosada/terraform-google-gcr-cleaner/commit/d0469761e323107622634a3fcf5a2f8b22edfbd0))
+* Set different rules per docker image in a Artifact Registry docker repository ([#53](https://github.com/pawelrosada/terraform-google-gcr-cleaner/issues/53)) ([75cc8dd](https://github.com/pawelrosada/terraform-google-gcr-cleaner/commit/75cc8dd9c59f272ac4f37e50c61a6423aaed14fc))
+
+
+### Bug Fixes
+
+* Gar multiple projects ([#62](https://github.com/pawelrosada/terraform-google-gcr-cleaner/issues/62)) ([28d7b66](https://github.com/pawelrosada/terraform-google-gcr-cleaner/commit/28d7b665fce130b159c2f01b46228a76de43aaa5))
+
 ## [1.4.1](https://github.com/mirakl/terraform-google-gcr-cleaner/compare/v1.4.0...v1.4.1) (2022-09-20)
 
 
